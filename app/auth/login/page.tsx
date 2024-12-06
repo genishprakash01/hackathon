@@ -8,8 +8,8 @@ import { usePartnerContext } from "@/context/PartnerProvider";
 
 export default function Login() {
   const {
-    getters: { partnerId },
-    actions: { setPartnerId, handleLogin },
+    getters: { partnerId, partnerName },
+    actions: { setPartnerId, setPartnerName, handleLogin },
   } = usePartnerContext();
 
   return (
@@ -28,6 +28,17 @@ export default function Login() {
                 value={partnerId}
                 onChange={(e) => setPartnerId(e.target.value)}
                 placeholder="Enter your Partner ID"
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="partnerName">Partner Name</Label>
+              <Input
+                id="partnerName"
+                type="text"
+                value={partnerName}
+                onChange={(e) => setPartnerName(e.target.value)}
+                placeholder="Enter your Partner Name"
                 required
               />
             </div>

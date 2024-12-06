@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-// ... existing imports ...
 import {
   useReactTable,
   getCoreRowModel,
@@ -20,24 +19,23 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 import { api } from "@/apiClient/apiRequests";
 import type { ApiResponse } from "@/apiClient/apiRequests";
+import { usePartnerContext } from "@/context/PartnerProvider";
+import axios from "axios";
+import { Plus } from "lucide-react";
 
-// Add type for data
+// Update the Merchant type to match API response
 type Merchant = {
-  name: string;
+  merchant_id: string;
+  merchant_name: string;
   status: string;
-  revenue: string;
+  create_date: number;
+  last_activity_date: number;
 };
 
-// Update type to include total count
-type MerchantsResponse = {
-  merchants: Merchant[];
-  totalCount: number;
-};
-
-// Define columns
+// Update columns definition to match new data structure
 const columns: ColumnDef<Merchant>[] = [
   {
-    accessorKey: "name",
+    accessorKey: "merchant_name",
     header: "Merchant Name",
   },
   {
@@ -46,13 +44,20 @@ const columns: ColumnDef<Merchant>[] = [
     cell: ({ row }) => <Badge>{row.original.status}</Badge>,
   },
   {
-    accessorKey: "revenue",
-    header: "Revenue",
+    accessorKey: "create_date",
+    header: "Created",
+    cell: ({ row }) => new Date(row.original.create_date).toLocaleDateString(),
+  },
+  {
+    accessorKey: "last_activity_date",
+    header: "Last Active",
+    cell: ({ row }) =>
+      new Date(row.original.last_activity_date).toLocaleDateString(),
   },
   {
     id: "actions",
     header: "Actions",
-    cell: () => (
+    cell: ({ row }) => (
       <Button variant="ghost" className="mr-2">
         View
       </Button>
@@ -61,25 +66,17 @@ const columns: ColumnDef<Merchant>[] = [
 ];
 
 export function MerchantsTab() {
-  const [data, setData] = useState<Merchant[]>([]);
+  const [data, setData] = useState<any>([]);
   const [totalCount, setTotalCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const {
+    getters: { partnerData },
+  } = usePartnerContext();
 
-  // Function to fetch merchants
-  const fetchMerchants = async (page: number) => {
-    setIsLoading(true);
-    try {
-      const response = await api.get<ApiResponse<MerchantsResponse>>(
-        `/merchants?page=${page + 1}&pageSize=10`
-      );
-      setData(response.data.merchants);
-      setTotalCount(response.data.totalCount);
-    } catch (error) {
-      console.error("Failed to fetch merchants:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  useEffect(() => {
+    setData(partnerData);
+    setTotalCount(partnerData.length);
+  }, [partnerData]);
 
   const table = useReactTable({
     data,
@@ -91,7 +88,6 @@ export function MerchantsTab() {
     onPaginationChange: (updater) => {
       if (typeof updater === "function") {
         const newState = updater(table.getState().pagination);
-        fetchMerchants(newState.pageIndex);
       }
     },
     initialState: {
@@ -103,13 +99,17 @@ export function MerchantsTab() {
   });
 
   // Initial load
-  useEffect(() => {
-    fetchMerchants(0);
-  }, []);
 
   return (
     <div>
-      <h2 className="text-2xl font-bold mb-4">Merchants</h2>
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-2xl font-bold mb-4">Merchants</h2>
+        <Button variant="outline">
+          <Plus className="mr-2 h-4 w-4" />
+          Add Merchant
+        </Button>
+      </div>
+
       <Card>
         <CardContent className="p-6">
           {/* ... search input ... */}
