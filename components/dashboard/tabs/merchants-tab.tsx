@@ -67,9 +67,9 @@ export function MerchantsTab() {
           const badgeColor = colorClasses[status as keyof typeof colorClasses] || colorClasses.default;
           
           return (
-            <Badge className={badgeColor}>
+            <div className={`${badgeColor} px-2 py-1 rounded-md text-xs font-semibold inline-flex items-center justify-center`}>
               {capitalizeAllLetters(row.original.status)}
-            </Badge>
+            </div>
           );
         },
     },
@@ -89,8 +89,9 @@ export function MerchantsTab() {
       header: "Actions",
       cell: ({ row }) => (
         <Button
-          variant="secondary"
+          variant="link"
           size="sm"
+          className="text-blue-600 hover:text-blue-800 p-0"
           onClick={(e) => {
             e.stopPropagation(); // Prevent row click event
             handleMerchantSelect(row.original);

@@ -34,7 +34,7 @@ const InvoiceComponent = ({ merchantId }: { merchantId: string }) => {
       header: "Status",
       cell: (info) => (
         <span
-          className={`px-2 py-1 rounded-full text-sm ${
+          className={`px-2 py-1 rounded-md text-sm ${
             info.getValue() === "paid"
               ? "bg-green-100 text-green-800"
               : info.getValue() === "Pending"

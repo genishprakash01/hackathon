@@ -22,13 +22,10 @@ export function HomeTab() {
   }, [partnerData]);
   let sum = 0;
   if (invoices) {
-    sum = Object.values(invoices).reduce(
-      (acc: number, curr: any) => {
-        console.log("Current invoice sum:", curr);
-        return acc + curr.invoiced_sum;
-      },
-      0
-    );
+    sum = Object.values(invoices).reduce((acc: number, curr: any) => {
+      console.log("Current invoice sum:", curr);
+      return acc + curr.invoiced_sum;
+    }, 0);
   }
 
   return (
@@ -43,11 +40,11 @@ export function HomeTab() {
           Add Merchant
         </Button>
       </div>
-      <div
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-        onClick={() => setActiveTab("merchants")}
-      >
-        <div className="bg-white rounded-lg shadow p-6 transition-transform duration-300 hover:scale-105 cursor-pointer">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div
+          className="bg-white rounded-lg shadow p-6 transition-transform duration-300 hover:scale-105 cursor-pointer"
+          onClick={() => setActiveTab("merchants")}
+        >
           <div className="flex items-center justify-between">
             <div>
               <p className="text-gray-500">Total Merchants</p>
@@ -80,7 +77,7 @@ export function HomeTab() {
         <div className="bg-white rounded-lg shadow p-6 transition-transform duration-300 hover:scale-105">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-500">Total Commissions</p>
+              <p className="text-gray-500">Pending Commissions</p>
               <h3 className="text-2xl font-bold">
                 ₹
                 {(totalCommissions * 0.1).toLocaleString("en-US", {
