@@ -1,8 +1,9 @@
 "use client";
 
-import { useRouter } from 'next/router';
+import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@/components/ui/breadcrumb";
+import Link from 'next/link';
 
 interface Merchant {
   id: string;
@@ -13,8 +14,9 @@ interface Merchant {
 }
 
 export default function MerchantDetails() {
+  const params = useParams();
   const router = useRouter();
-  const { id } = router.query;
+  const id = params.id as string;
   const [merchant, setMerchant] = useState<Merchant | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -59,10 +61,12 @@ export default function MerchantDetails() {
     <div className="container mx-auto p-6">
       <Breadcrumb className="mb-6">
         <BreadcrumbItem>
-          <BreadcrumbLink href="/merchants">Merchants</BreadcrumbLink>
+          <Link href="/merchants" className="text-blue-600 hover:text-blue-800">
+            Merchants
+          </Link>
         </BreadcrumbItem>
         <BreadcrumbItem>
-          <BreadcrumbLink>{merchant.name}</BreadcrumbLink>
+          <span>{merchant.name}</span>
         </BreadcrumbItem>
       </Breadcrumb>
 

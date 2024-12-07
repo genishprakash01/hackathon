@@ -16,7 +16,7 @@ import AddMerchant from "@/components/common/AddMerchant";
 
 export function HomeTab() {
   const {
-    getters: { partnerData },
+    getters: { partnerData, totalCommissions },
   } = usePartnerContext();
   const [totalMerchants, setTotalMerchants] = useState(0);
   const [isAddMerchantDialogOpen, setIsAddMerchantDialogOpen] = useState(false);
@@ -52,11 +52,12 @@ export function HomeTab() {
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg">Pending Invoices</CardTitle>
+            <CardTitle className="text-lg">Total Commissions</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-3xl font-bold text-orange-600">32</p>
-            <p className="text-sm text-gray-500">↓ 3% from last month</p>
+            <p className="text-3xl font-bold text-orange-600">
+              ₹{(totalCommissions * 0.1).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            </p>
           </CardContent>
         </Card>
       </div>

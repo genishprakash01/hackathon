@@ -12,20 +12,40 @@ import { Loader } from "@/components/ui/loader";
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState<TabType>("home");
-  const { actions: { setPartnerData } } = usePartnerContext();
+  const { actions: { setPartnerData, setTotalCommissions } } = usePartnerContext();
   const [totalCount, setTotalCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
   const fetchMerchants = async () => {
     setIsLoading(true);
     try {
-      const response: any = await axios.get<ApiResponse<{ data: Merchant[] }>>(
-        `https://c5ef-116-66-190-58.ngrok-free.app/flo-settlement/api/v1/partners/16210703270/merchants`
-      );
-      setPartnerData(response.data.data);
-      setTotalCount(response.data.data.length);
+      const [merchantsResponse, settlementResponse] = await Promise.all([
+        axios.get(
+          `https://api.shopflo.co/flo-settlement/api/v1/partners/16210703270/merchants`,
+          {
+            headers: {
+              "x-shopflo-version": "latest",
+            },
+          }
+        ),
+        axios.get(
+          `https://api.shopflo.co/flo-settlement/api/v1/partners/16210703270/settlement`,
+          {
+            headers: {
+              "x-shopflo-version": "latest",
+            },
+          }
+        ),
+      ]);
+      console.log(settlementResponse);
+
+      setPartnerData(merchantsResponse.data.data);
+      setTotalCount(merchantsResponse.data.data.length);
+      setTotalCommissions(settlementResponse.data.data.total);
+      // Handle settlement data as needed
+      // You might want to add a new state variable for settlement data
     } catch (error) {
-      console.error("Failed to fetch merchants:", error);
+      console.error("Failed to fetch data:", error);
     } finally {
       setIsLoading(false);
     }

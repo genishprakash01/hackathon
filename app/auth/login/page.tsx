@@ -8,7 +8,7 @@ import { usePartnerContext } from "@/context/PartnerProvider";
 
 export default function Login() {
   const {
-    getters: { partnerId, partnerName },
+    getters: { partnerId, partnerName, isLoading },
     actions: { setPartnerId, setPartnerName, handleLogin },
   } = usePartnerContext();
 
@@ -37,13 +37,14 @@ export default function Login() {
                 id="partnerName"
                 type="text"
                 value={partnerName}
+
                 onChange={(e) => setPartnerName(e.target.value)}
                 placeholder="Enter your Partner Name"
                 required
               />
             </div>
-            <Button type="submit" className="w-full">
-              Login
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? "Logging in..." : "Login"} 
             </Button>
           </form>
         </CardContent>

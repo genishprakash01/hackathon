@@ -9,7 +9,9 @@ export enum ActionType {
   SET_PARTNER_ID = 'SET_PARTNER_ID',
   SET_TOKEN_ID = 'SET_TOKEN_ID',
   SET_PARTNER_NAME = 'SET_PARTNER_NAME',
-  SET_PARTNER_DATA = 'SET_PARTNER_DATA'
+  SET_PARTNER_DATA = 'SET_PARTNER_DATA',
+  SET_TOTAL_COMMISSIONS = 'SET_TOTAL_COMMISSIONS',
+  SET_IS_LOADING = 'SET_IS_LOADING'
 }
 
 type PartnerAction = {
@@ -22,6 +24,8 @@ interface PartnerState {
   tokenId: string;
   partnerName: string;
   partnerData: Merchant[];
+  totalCommissions: number;
+  isLoading: boolean;
 }
 
 interface PartnerContextType {
@@ -32,12 +36,16 @@ interface PartnerContextType {
     setTokenId: (value: string) => void;
     setPartnerName: (value: string) => void;
     setPartnerData: (value: Merchant[]) => void;
+    setTotalCommissions: (value: number) => void;
+    setIsLoading: (value: boolean) => void;
   };
   getters: {
     partnerId: string;
     tokenId: string;
     partnerName: string;
     partnerData: Merchant[];
+    totalCommissions: number;
+    isLoading: boolean;
   };
 }
 
@@ -45,7 +53,9 @@ const initialState: PartnerState = {
   partnerId: '',
   tokenId: '',
   partnerName: '',
-  partnerData: []
+  partnerData: [],
+  totalCommissions: 0,
+  isLoading: false
 };
 
 function partnerReducer(state: PartnerState, action: PartnerAction): PartnerState {
@@ -58,6 +68,8 @@ function partnerReducer(state: PartnerState, action: PartnerAction): PartnerStat
       return { ...state, partnerName: action.payload };
     case ActionType.SET_PARTNER_DATA:
       return { ...state, partnerData: action.payload };
+    case ActionType.SET_TOTAL_COMMISSIONS:
+      return { ...state, totalCommissions: action.payload };
     default:
       return state;
   }
@@ -84,12 +96,22 @@ export function PartnerProvider({ children }: { children: React.ReactNode }) {
     dispatch({ type: ActionType.SET_PARTNER_DATA, payload: value });
   }, []);
 
+  const handleSetTotalCommissions = useCallback((value: number) => {
+    dispatch({ type: ActionType.SET_TOTAL_COMMISSIONS, payload: value });
+  }, []);
+
+  const handleSetIsLoading = useCallback((value: boolean) => {
+    dispatch({ type: ActionType.SET_IS_LOADING, payload: value });
+  }, []);
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    handleSetIsLoading(true);
     const isValid: any = await validateLogin(state.partnerName, state.partnerId);
     if (isValid) {
       router.push("/dashboard");
     }
+    handleSetIsLoading(false);
   };
 
   const actions = {
@@ -97,14 +119,18 @@ export function PartnerProvider({ children }: { children: React.ReactNode }) {
     handleLogin: handleLogin, 
     setTokenId: handleSetTokenId,
     setPartnerName: handleSetPartnerName,
-    setPartnerData: handleSetPartnerData
+    setPartnerData: handleSetPartnerData,
+    setTotalCommissions: handleSetTotalCommissions,
+    setIsLoading: handleSetIsLoading
   };
 
   const getters = {
     partnerId: state.partnerId,
     tokenId: state.tokenId,
     partnerName: state.partnerName,
-    partnerData: state.partnerData
+    partnerData: state.partnerData,
+    totalCommissions: state.totalCommissions,
+    isLoading: state.isLoading
   };
 
   return (
