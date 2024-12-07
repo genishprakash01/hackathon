@@ -2,6 +2,7 @@
 
 import { Merchant } from '@/apiClient/apiRequests';
 import { validateLogin } from '@/lib/utils';
+import { TabType } from '@/types/dashboard';
 import { useRouter } from 'next/navigation';
 import React, { createContext, useContext, useReducer, useCallback } from 'react';
 
@@ -11,7 +12,8 @@ export enum ActionType {
   SET_PARTNER_NAME = 'SET_PARTNER_NAME',
   SET_PARTNER_DATA = 'SET_PARTNER_DATA',
   SET_TOTAL_COMMISSIONS = 'SET_TOTAL_COMMISSIONS',
-  SET_IS_LOADING = 'SET_IS_LOADING'
+  SET_IS_LOADING = 'SET_IS_LOADING',
+  SET_ACTIVE_TAB = 'SET_ACTIVE_TAB'
 }
 
 type PartnerAction = {
@@ -26,6 +28,7 @@ interface PartnerState {
   partnerData: Merchant[];
   totalCommissions: number;
   isLoading: boolean;
+  activeTab: TabType;
 }
 
 interface PartnerContextType {
@@ -38,6 +41,7 @@ interface PartnerContextType {
     setPartnerData: (value: Merchant[]) => void;
     setTotalCommissions: (value: number) => void;
     setIsLoading: (value: boolean) => void;
+    setActiveTab: (value: TabType) => void;
   };
   getters: {
     partnerId: string;
@@ -46,6 +50,7 @@ interface PartnerContextType {
     partnerData: Merchant[];
     totalCommissions: number;
     isLoading: boolean;
+    activeTab: TabType;
   };
 }
 
@@ -55,7 +60,8 @@ const initialState: PartnerState = {
   partnerName: '',
   partnerData: [],
   totalCommissions: 0,
-  isLoading: false
+  isLoading: false,
+  activeTab: 'home'
 };
 
 function partnerReducer(state: PartnerState, action: PartnerAction): PartnerState {
@@ -70,6 +76,8 @@ function partnerReducer(state: PartnerState, action: PartnerAction): PartnerStat
       return { ...state, partnerData: action.payload };
     case ActionType.SET_TOTAL_COMMISSIONS:
       return { ...state, totalCommissions: action.payload };
+    case ActionType.SET_ACTIVE_TAB:
+      return { ...state, activeTab: action.payload };
     default:
       return state;
   }
@@ -104,6 +112,10 @@ export function PartnerProvider({ children }: { children: React.ReactNode }) {
     dispatch({ type: ActionType.SET_IS_LOADING, payload: value });
   }, []);
 
+  const handleSetActiveTab = useCallback((value: TabType) => {
+    dispatch({ type: ActionType.SET_ACTIVE_TAB, payload: value });
+  }, []);
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     handleSetIsLoading(true);
@@ -121,7 +133,8 @@ export function PartnerProvider({ children }: { children: React.ReactNode }) {
     setPartnerName: handleSetPartnerName,
     setPartnerData: handleSetPartnerData,
     setTotalCommissions: handleSetTotalCommissions,
-    setIsLoading: handleSetIsLoading
+    setIsLoading: handleSetIsLoading,
+    setActiveTab: handleSetActiveTab
   };
 
   const getters = {
@@ -130,7 +143,8 @@ export function PartnerProvider({ children }: { children: React.ReactNode }) {
     partnerName: state.partnerName,
     partnerData: state.partnerData,
     totalCommissions: state.totalCommissions,
-    isLoading: state.isLoading
+    isLoading: state.isLoading,
+    activeTab: state.activeTab
   };
 
   return (

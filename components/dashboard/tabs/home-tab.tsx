@@ -10,13 +10,14 @@ import { Activity } from "@/components/dashboard/activity";
 import { usePartnerContext } from "@/context/PartnerProvider";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import { Plus, Store, DollarSign, Wallet } from "lucide-react";
 import GenericDialog from "@/components/common/GenericDialog";
 import AddMerchant from "@/components/common/AddMerchant";
 
 export function HomeTab() {
   const {
-    getters: { partnerData, totalCommissions },
+    getters: { partnerData, totalCommissions, activeTab },
+    actions: { setActiveTab }
   } = usePartnerContext();
   const [totalMerchants, setTotalMerchants] = useState(0);
   const [isAddMerchantDialogOpen, setIsAddMerchantDialogOpen] = useState(false);
@@ -32,34 +33,49 @@ export function HomeTab() {
           Add Merchant
         </Button>
       </div>  
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Total Merchants</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-3xl font-bold text-blue-600">{partnerData.length}</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Total Revenue</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-3xl font-bold text-green-600">$52,489</p>
-            <p className="text-sm text-gray-500">↑ 8% from last month</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Total Commissions</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-3xl font-bold text-orange-600">
-              ₹{(totalCommissions * 0.1).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-            </p>
-          </CardContent>
-        </Card>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" onClick={() => setActiveTab("merchants")}>
+        <div className="bg-white rounded-lg shadow p-6 transition-transform duration-300 hover:scale-105 cursor-pointer">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-gray-500">Total Merchants</p>
+              <h3 className="text-2xl font-bold">{partnerData.length}</h3>
+            </div>
+            <div className="bg-blue-100 p-3 rounded-full">
+              <Store className="h-6 w-6 text-blue-600" />
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-lg shadow p-6 transition-transform duration-300 hover:scale-105">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-gray-500">Total Revenue</p>
+              <h3 className="text-2xl font-bold">
+                ₹{totalCommissions.toLocaleString("en-US", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}
+              </h3>
+            </div>
+            <div className="bg-green-100 p-3 rounded-full">
+              <DollarSign className="h-6 w-6 text-green-600" />
+            </div>
+          </div>
+          </div>
+
+        <div className="bg-white rounded-lg shadow p-6 transition-transform duration-300 hover:scale-105">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-gray-500">Total Commissions</p>
+              <h3 className="text-2xl font-bold">
+                ₹{(totalCommissions * 0.1).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              </h3>
+            </div>
+            <div className="bg-orange-100 p-3 rounded-full">
+              <Wallet className="h-6 w-6 text-orange-600" />
+            </div>
+          </div>
+        </div>
       </div>
       <Activity />
       <GenericDialog

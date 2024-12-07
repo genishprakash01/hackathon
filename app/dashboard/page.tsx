@@ -11,8 +11,7 @@ import { usePartnerContext } from "@/context/PartnerProvider";
 import { Loader } from "@/components/ui/loader";
 
 export default function Dashboard() {
-  const [activeTab, setActiveTab] = useState<TabType>("home");
-  const { actions: { setPartnerData, setTotalCommissions } } = usePartnerContext();
+  const {getters: { activeTab }, actions: { setPartnerData, setTotalCommissions, setActiveTab } } = usePartnerContext();
   const [totalCount, setTotalCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
