@@ -13,7 +13,8 @@ export enum ActionType {
   SET_PARTNER_DATA = 'SET_PARTNER_DATA',
   SET_TOTAL_COMMISSIONS = 'SET_TOTAL_COMMISSIONS',
   SET_IS_LOADING = 'SET_IS_LOADING',
-  SET_ACTIVE_TAB = 'SET_ACTIVE_TAB'
+  SET_ACTIVE_TAB = 'SET_ACTIVE_TAB',
+  SET_INVOICES = 'SET_INVOICES'
 }
 
 type PartnerAction = {
@@ -29,6 +30,7 @@ interface PartnerState {
   totalCommissions: number;
   isLoading: boolean;
   activeTab: TabType;
+  invoices: any;
 }
 
 interface PartnerContextType {
@@ -42,6 +44,7 @@ interface PartnerContextType {
     setTotalCommissions: (value: number) => void;
     setIsLoading: (value: boolean) => void;
     setActiveTab: (value: TabType) => void;
+    setInvoices: (value: any[]) => void;
   };
   getters: {
     partnerId: string;
@@ -51,6 +54,7 @@ interface PartnerContextType {
     totalCommissions: number;
     isLoading: boolean;
     activeTab: TabType;
+    invoices: any;
   };
 }
 
@@ -61,7 +65,8 @@ const initialState: PartnerState = {
   partnerData: [],
   totalCommissions: 0,
   isLoading: false,
-  activeTab: 'home'
+  activeTab: 'home',
+  invoices: []
 };
 
 function partnerReducer(state: PartnerState, action: PartnerAction): PartnerState {
@@ -78,6 +83,10 @@ function partnerReducer(state: PartnerState, action: PartnerAction): PartnerStat
       return { ...state, totalCommissions: action.payload };
     case ActionType.SET_ACTIVE_TAB:
       return { ...state, activeTab: action.payload };
+    case ActionType.SET_IS_LOADING:
+      return { ...state, isLoading: action.payload };
+    case ActionType.SET_INVOICES:
+      return { ...state, invoices: action.payload };
     default:
       return state;
   }
@@ -116,6 +125,10 @@ export function PartnerProvider({ children }: { children: React.ReactNode }) {
     dispatch({ type: ActionType.SET_ACTIVE_TAB, payload: value });
   }, []);
 
+  const handleSetInvoices = useCallback((value: any[]) => {
+    dispatch({ type: ActionType.SET_INVOICES, payload: value });
+  }, []);
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     handleSetIsLoading(true);
@@ -134,7 +147,8 @@ export function PartnerProvider({ children }: { children: React.ReactNode }) {
     setPartnerData: handleSetPartnerData,
     setTotalCommissions: handleSetTotalCommissions,
     setIsLoading: handleSetIsLoading,
-    setActiveTab: handleSetActiveTab
+    setActiveTab: handleSetActiveTab,
+    setInvoices: handleSetInvoices
   };
 
   const getters = {
@@ -144,7 +158,8 @@ export function PartnerProvider({ children }: { children: React.ReactNode }) {
     partnerData: state.partnerData,
     totalCommissions: state.totalCommissions,
     isLoading: state.isLoading,
-    activeTab: state.activeTab
+    activeTab: state.activeTab,
+    invoices: state.invoices
   };
 
   return (

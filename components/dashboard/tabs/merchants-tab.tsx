@@ -21,8 +21,9 @@ import { api } from "@/apiClient/apiRequests";
 import type { ApiResponse } from "@/apiClient/apiRequests";
 import { usePartnerContext } from "@/context/PartnerProvider";
 import axios from "axios";
-import { Plus } from "lucide-react";
+import { ArrowLeft, Plus } from "lucide-react";
 import InvoiceComponent from "@/components/common/InvoiceComponent";
+import { capitalizeFirstLetter, capitalizeAllLetters } from "@/lib/utils";
 
 // Update the Merchant type to match API response
 type Merchant = {
@@ -37,33 +38,70 @@ type Merchant = {
 type ViewMode = "merchants" | "invoices";
 
 // Update columns definition to match new data structure
-const columns: ColumnDef<Merchant>[] = [
-  {
-    accessorKey: "merchant_name",
-    header: "Merchant Name",
-  },
-  {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({ row }) => <Badge>{row.original.status}</Badge>,
-  },
-  {
-    accessorKey: "create_date",
-    header: "Created",
-    cell: ({ row }) => new Date(row.original.create_date).toLocaleDateString(),
-  },
-  {
-    accessorKey: "last_activity_date",
-    header: "Last Active",
-    cell: ({ row }) =>
-      new Date(row.original.last_activity_date).toLocaleDateString(),
-  },
-];
 
 export function MerchantsTab() {
   const [data, setData] = useState<any>([]);
   const [totalCount, setTotalCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+
+  const columns: ColumnDef<Merchant>[] = [
+    {
+      accessorKey: "merchant_name",
+      header: "Merchant Name",
+      cell: ({ row }) => (
+        <div className="font-medium">
+          {capitalizeAllLetters(row.original.merchant_name)}
+        </div>
+      ),
+    },
+    {
+        accessorKey: "status",
+        header: "Status",
+        cell: ({ row }) => {
+          const status = row.original.status.toLowerCase();
+          const colorClasses = {
+            churned: 'bg-red-100 text-red-800 hover:bg-red-100',
+            live: 'bg-green-100 text-green-800 hover:bg-green-100',
+            default: 'bg-yellow-100 text-yellow-800 hover:bg-yellow-100'
+          };
+          const badgeColor = colorClasses[status as keyof typeof colorClasses] || colorClasses.default;
+          
+          return (
+            <Badge className={badgeColor}>
+              {capitalizeAllLetters(row.original.status)}
+            </Badge>
+          );
+        },
+    },
+    {
+      accessorKey: "create_date",
+      header: "Created",
+      cell: ({ row }) => new Date(row.original.create_date).toLocaleDateString(),
+    },
+    {
+      accessorKey: "last_activity_date",
+      header: "Last Active",
+      cell: ({ row }) =>
+        new Date(row.original.last_activity_date).toLocaleDateString(),
+    },
+    {
+      id: "actions",
+      header: "Actions",
+      cell: ({ row }) => (
+        <Button
+          variant="secondary"
+          size="sm"
+          onClick={(e) => {
+            e.stopPropagation(); // Prevent row click event
+            handleMerchantSelect(row.original);
+          }}
+        >
+          View Invoices
+        </Button>
+      ),
+    },
+  ];
+  
   const {
     getters: { partnerData },
   } = usePartnerContext();
@@ -154,7 +192,7 @@ export function MerchantsTab() {
                     table.getRowModel().rows.map((row) => (
                       <TableRow
                         key={row.id}
-                        onClick={() => handleMerchantSelect(row.original)}
+                        className="cursor-default"
                       >
                         {row.getVisibleCells().map((cell) => (
                           <TableCell key={cell.id}>
@@ -200,11 +238,12 @@ export function MerchantsTab() {
         </div>
       ) : (
         <div>
-          <div className="flex items-center mb-4">
-            <Button variant="ghost" onClick={handleBack} className="mr-2">
-              ← Back to Merchants
+          <div className="flex flex-col gap-4">
+            
+            <Button variant="ghost" onClick={handleBack} className="w-fit bg-white">
+              <ArrowLeft className="mr-2" size={16} /> Back to Merchants
             </Button>
-            <h2 className="text-2xl font-bold">
+            <h2 className="text-2xl font-bold mb-4">
               Invoices for {selectedMerchant?.merchant_name}
             </h2>
           </div>

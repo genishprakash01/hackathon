@@ -11,7 +11,10 @@ import { usePartnerContext } from "@/context/PartnerProvider";
 import { Loader } from "@/components/ui/loader";
 
 export default function Dashboard() {
-  const {getters: { activeTab }, actions: { setPartnerData, setTotalCommissions, setActiveTab } } = usePartnerContext();
+  const {
+    getters: { activeTab, invoices },
+    actions: { setPartnerData, setTotalCommissions, setActiveTab, setInvoices },
+  } = usePartnerContext();
   const [totalCount, setTotalCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -41,8 +44,7 @@ export default function Dashboard() {
       setPartnerData(merchantsResponse.data.data);
       setTotalCount(merchantsResponse.data.data.length);
       setTotalCommissions(settlementResponse.data.data.total);
-      // Handle settlement data as needed
-      // You might want to add a new state variable for settlement data
+      setInvoices(settlementResponse.data.data.merchant_payout_details);
     } catch (error) {
       console.error("Failed to fetch data:", error);
     } finally {
@@ -53,7 +55,9 @@ export default function Dashboard() {
   useEffect(() => {
     fetchMerchants();
   }, []);
-    
+
+  console.log(invoices);
+
   return (
     <>
       <Loader isLoading={isLoading} />

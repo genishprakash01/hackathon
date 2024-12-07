@@ -43,3 +43,11 @@ export const validateLogin = async (name: string, partnerId: string) => {
     return false;
   }
 };
+
+export const capitalizeFirstLetter = (string: string) => {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+};
+
+export const capitalizeAllLetters = (string: string) => {
+  return string.toUpperCase();
+};
