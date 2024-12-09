@@ -17,9 +17,15 @@ export default function Dashboard() {
   } = usePartnerContext();
   const [totalCount, setTotalCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const partnerId = localStorage.getItem("partnerId") ;
+  const [partnerId, setPartnerId] = useState<string | null>(null);
+
+  useEffect(() => {
+    setPartnerId(localStorage.getItem("partnerId"));
+  }, []);
 
   const fetchMerchants = async () => {
+    if (!partnerId) return;
+    
     setIsLoading(true);
     try {
       const [merchantsResponse, settlementResponse] = await Promise.all([

@@ -104,6 +104,8 @@ export function HomeTab() {
         handleClose={() => {
           setIsAddMerchantDialogOpen(false);
         }}
+        jobButtonText={'Submit'}
+        closeButtonText='Cancel'
         content={<AddMerchant />}
         title="Add Merchant"
       />
