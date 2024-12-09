@@ -61,7 +61,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     fetchMerchants();
-  }, []);
+  }, [partnerId]);
 
   console.log(invoices);
 
