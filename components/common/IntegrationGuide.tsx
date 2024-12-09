@@ -1,3 +1,4 @@
+"use client"
 import React from 'react';
 import Link from 'next/link';
 
@@ -25,20 +26,24 @@ const DashboardSetup = () => {
       content: "Follow this guide to create a custom app in Shopify:",
       link: {
         text: "Step-by-Step Guide",
-        url: "https://scribehow.com/shared/How_to_Create_Custom_app_in_Shopify__Wwe9wxEhTpal-7lOfo0NSg" // Replace with actual URL
+        url: "https://scribehow.com/shared/How_to_Create_Custom_app_in_Shopify__Wwe9wxEhTpal-7lOfo0NSg"
       }
     },
     {
       title: "Set Up Payment Gateway",
-      content: "",
+      content: "Configure your preferred payment gateway to start accepting payments.",
+      link: {
+        text: "Step-by-Step Guide",
+        url: "https://www.shopflo.com/help-category/payment-gateways"
+      }
     },
     {
       title: "Integrate Google/Meta Accounts",
-      content: "Connect your Google and/or Meta accounts for seamless integration."
-    },
-    {
-      title: "Integration Timeline",
-      content: "Once these steps are completed, our team will take 24-48 hours to complete the integration."
+      content: "Connect your advertising accounts to track conversions and optimize campaigns.",
+      link: {
+        text: "Step-by-Step Guide",
+        url: "https://www.shopflo.com/help-category/marketing-integrations"
+      }
     }
   ];
 
