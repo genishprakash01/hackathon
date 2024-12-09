@@ -12,18 +12,19 @@ import { Loader } from "@/components/ui/loader";
 
 export default function Dashboard() {
   const {
-    getters: { activeTab, invoices },
+    getters: { activeTab, invoices  },
     actions: { setPartnerData, setTotalCommissions, setActiveTab, setInvoices },
   } = usePartnerContext();
   const [totalCount, setTotalCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const partnerId = localStorage.getItem("partnerId") ;
 
   const fetchMerchants = async () => {
     setIsLoading(true);
     try {
       const [merchantsResponse, settlementResponse] = await Promise.all([
         axios.get(
-          `https://api.shopflo.co/flo-settlement/api/v1/partners/16210703270/merchants`,
+          `https://api.shopflo.co/flo-settlement/api/v1/partners/${partnerId}/merchants`,
           {
             headers: {
               "x-shopflo-version": "latest",
@@ -31,7 +32,7 @@ export default function Dashboard() {
           }
         ),
         axios.get(
-          `https://api.shopflo.co/flo-settlement/api/v1/partners/16210703270/settlement`,
+          `https://api.shopflo.co/flo-settlement/api/v1/partners/${partnerId}/settlement`,
           {
             headers: {
               "x-shopflo-version": "latest",

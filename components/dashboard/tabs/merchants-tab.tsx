@@ -155,10 +155,10 @@ export function MerchantsTab() {
         <div>
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-2xl font-bold mb-4">Merchants</h2>
-            <Button variant="outline">
+            {/* <Button variant="outline">
               <Plus className="mr-2 h-4 w-4" />
               Add Merchant
-            </Button>
+            </Button> */}
           </div>
 
           <Card>
@@ -210,7 +210,7 @@ export function MerchantsTab() {
               </Table>
 
               {/* Pagination Controls */}
-              <div className="flex items-center justify-end space-x-2 py-4">
+              {/* <div className="flex items-center justify-end space-x-2 py-4">
                 <Button
                   variant="outline"
                   size="sm"
@@ -233,7 +233,7 @@ export function MerchantsTab() {
                 >
                   Next
                 </Button>
-              </div>
+              </div> */}
             </CardContent>
           </Card>
         </div>

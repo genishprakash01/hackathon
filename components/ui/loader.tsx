@@ -12,7 +12,7 @@ export function Loader({ isLoading, className }: LoaderProps) {
   if (!isLoading) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/20 backdrop-blur-sm">
       <div className={cn("animate-spin", className)}>
         <Loader2 className="h-8 w-8 text-primary" />
       </div>

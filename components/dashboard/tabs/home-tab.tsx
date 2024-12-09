@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Plus, Store, DollarSign, Wallet } from "lucide-react";
 import GenericDialog from "@/components/common/GenericDialog";
 import AddMerchant from "@/components/common/AddMerchant";
+import IntegrationGuide from "@/components/common/IntegrationGuide";
 
 export function HomeTab() {
   const {
@@ -92,7 +93,11 @@ export function HomeTab() {
           </div>
         </div>
       </div>
-      <Activity />
+      <div className="w-full ">
+        <IntegrationGuide />
+      </div>
+      {/* <Activity /> */}
+      
       <GenericDialog
         isOpen={isAddMerchantDialogOpen}
         width={560}

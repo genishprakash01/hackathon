@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import { Select, MenuItem, FormControl, InputLabel } from '@mui/material'
+import { SelectChangeEvent } from '@mui/material/Select';
 
 const AddMerchant = () => {
   const [formData, setFormData] = useState({
@@ -14,12 +16,11 @@ const AddMerchant = () => {
     tier: ''
   })
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }))
+  const handleChange = (e: SelectChangeEvent | React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
   }
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,7 +44,7 @@ const AddMerchant = () => {
             name="dealname"
             value={formData.dealname}
             onChange={handleChange}
-            className="border p-2 w-full rounded"
+            className="border p-2 w-full rounded-lg focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500"
           />
         </div>
 
@@ -54,7 +55,7 @@ const AddMerchant = () => {
             name="amount"
             value={formData.amount}
             onChange={handleChange}
-            className="border p-2 w-full rounded"
+            className="border p-2 w-full rounded-lg focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
           />
         </div>
 
@@ -65,7 +66,7 @@ const AddMerchant = () => {
             name="website_url"
             value={formData.website_url}
             onChange={handleChange}
-            className="border p-2 w-full rounded"
+            className="border p-2 w-full rounded-lg focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500"
           />
         </div>
 
@@ -76,7 +77,7 @@ const AddMerchant = () => {
             name="collab_access_code"
             value={formData.collab_access_code}
             onChange={handleChange}
-            className="border p-2 w-full rounded"
+            className="border p-2 w-full rounded-lg focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500"
           />
         </div>
 
@@ -99,18 +100,33 @@ const AddMerchant = () => {
         </div>
 
         <div>
-          <label className="block mb-1">Tier</label>
-          <select
-            name="tier"
-            value={formData.tier}
-            onChange={handleChange}
-            className="border p-2 w-full rounded"
-          >
-            <option value="">Select Tier</option>
-            <option value="Tier 1 (Startup)">Tier 1 (Startup)</option>
-            <option value="Tier 2">Tier 2</option>
-            <option value="Tier 3">Tier 3</option>
-          </select>
+          <FormControl fullWidth>
+            <InputLabel id="tier-label">Tier</InputLabel>
+            <Select
+              labelId="tier-label"
+              id="tier"
+              name="tier"
+              value={formData.tier}
+              onChange={handleChange}
+              label="Tier"
+              sx={{
+                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                  borderColor: '#22c55e',
+                },
+                '&:hover .MuiOutlinedInput-notchedOutline': {
+                  borderColor: '#22c55e',
+                },
+                borderRadius: '0.5rem'
+              }}
+            >
+              <MenuItem value="">
+                <em>Select Tier</em>
+              </MenuItem>
+              <MenuItem value="Tier 1 (Startup)">Tier 1 (Startup)</MenuItem>
+              <MenuItem value="Tier 2">Tier 2</MenuItem>
+              <MenuItem value="Tier 3">Tier 3</MenuItem>
+            </Select>
+          </FormControl>
         </div>
       </form>
     </div>
