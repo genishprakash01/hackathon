@@ -12,6 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useEffect, useState } from "react";
+import { getLocalStorage, removeLocalStorage } from "@/lib/utils";
 
 export function UserNav() {
   const router = useRouter();
@@ -19,16 +20,15 @@ export function UserNav() {
   const [partnerId, setPartnerId] = useState("");
 
   useEffect(() => {
-    const storedPartnerName = localStorage.getItem("partnerName") || "";
-    const storedPartnerId = localStorage.getItem("partnerId") || "";
+    const storedPartnerName = getLocalStorage("partnerName") || "";
+    const storedPartnerId = getLocalStorage("partnerId") || "";
     setPartnerName(storedPartnerName);
     setPartnerId(storedPartnerId);
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("partnerName");
-    localStorage.removeItem("partnerId");
-    
+    removeLocalStorage("partnerName");
+    removeLocalStorage("partnerId");
     router.push("/auth/login");
   };
 
