@@ -46,7 +46,6 @@ export default function Dashboard() {
           }
         ),
       ]);
-      console.log(settlementResponse);
 
       setPartnerData(merchantsResponse.data.data);
       setTotalCount(merchantsResponse.data.data.length);
@@ -54,6 +53,10 @@ export default function Dashboard() {
       setInvoices(settlementResponse.data.data.merchant_payout_details);
     } catch (error) {
       console.error("Failed to fetch data:", error);
+      setPartnerData([]);
+      setTotalCount(0);
+      setTotalCommissions(0);
+      setInvoices([]);
     } finally {
       setIsLoading(false);
     }
@@ -63,7 +66,6 @@ export default function Dashboard() {
     fetchMerchants();
   }, [partnerId]);
 
-  console.log(invoices);
 
   return (
     <>
