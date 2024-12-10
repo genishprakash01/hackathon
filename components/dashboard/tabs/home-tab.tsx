@@ -12,11 +12,10 @@ import IntegrationGuide from "@/components/common/IntegrationGuide";
 
 export function HomeTab() {
   const {
-    getters: { partnerData, totalCommissions, activeTab, invoices },
+    getters: { partnerData, totalCommissions, invoices },
     actions: { setActiveTab },
   } = usePartnerContext();
   const [totalMerchants, setTotalMerchants] = useState(0);
-  const [totalInvoicedSum, setTotalInvoicedSum] = useState(0);
   const [isAddMerchantDialogOpen, setIsAddMerchantDialogOpen] = useState(false);
   useEffect(() => {
     setTotalMerchants(partnerData.length);

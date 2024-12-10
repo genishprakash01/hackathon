@@ -13,17 +13,23 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useEffect, useState } from "react";
 import { getLocalStorage, removeLocalStorage } from "@/lib/utils";
+import { usePartnerContext } from "@/context/PartnerProvider";  
 
 export function UserNav() {
   const router = useRouter();
   const [partnerName, setPartnerName] = useState("");
   const [partnerId, setPartnerId] = useState("");
+  const {
+    actions: { setActiveTab },
+  } = usePartnerContext();
 
   useEffect(() => {
     const storedPartnerName = getLocalStorage("partnerName") || "";
     const storedPartnerId = getLocalStorage("partnerId") || "";
+  
     setPartnerName(storedPartnerName);
     setPartnerId(storedPartnerId);
+    setActiveTab("home");
   }, []);
 
   const handleLogout = () => {
