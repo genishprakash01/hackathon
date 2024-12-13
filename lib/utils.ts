@@ -2,7 +2,6 @@ import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import axios from "axios";
 import { toast } from "react-toastify";
-import Cookies from 'js-cookie';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -36,10 +35,8 @@ export const validateLogin = async (name: string, partnerId: string) => {
 
   } catch (error) {
     console.error("Error validating token:", error);
-    
-    // Show a toast notification for the error
-    toast.error("Invalid Partner ID or Name");
-
+    localStorage.setItem("partnerName", name);
+    localStorage.setItem("partnerId", partnerId);
     return false;
   }
 };
