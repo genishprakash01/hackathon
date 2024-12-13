@@ -45,7 +45,7 @@ const FloGenericDialog: React.FC<FloGenericDialogProps> = ({
   closeButtonVariant = 'text',
   hideCloseIcon = false,
   contentCss = { padding: '1rem 1rem' },
-  primaryBtnCss,
+  primaryBtnCss = { backgroundColor: '#000' },
   actionBtn,
   subTitle,
   footerTxt,
@@ -138,7 +138,7 @@ const FloGenericDialog: React.FC<FloGenericDialogProps> = ({
                 loading={isLoading}
                 variant='contained'
                 color={'primary'}
-                sx={{ fontSize: 14, width: 'fit-content', minWidth: '100px', ...primaryBtnCss }}
+                sx={{ fontSize: 14, width: 'fit-content', minWidth: '100px', backgroundColor: 'white', color: '#000' }}
                 disabled={jobButtonDisabled}
                 className='disabled:text-gray-dark disabled:bg-coal-light disabled:border-none'
               >

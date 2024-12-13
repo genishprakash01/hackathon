@@ -84,6 +84,7 @@ const InvoiceComponent = ({ merchantId }: { merchantId: string }) => {
     const fetchInvoices = async () => {
       try {
         setIsLoading(true);
+        if(invoices.length > 0) return
         const response = await axios.get(
           `https://api.shopflo.co/flo-settlement/api/v1/partners/16210703270/merchants/${merchantId}/inovoices`,
           {

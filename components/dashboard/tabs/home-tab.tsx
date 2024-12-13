@@ -80,7 +80,7 @@ export function HomeTab() {
               <p className="text-gray-500">Pending Commissions</p>
               <h3 className="text-2xl font-bold">
                 ₹
-                {(totalCommissions * 0.1).toLocaleString("en-US", {
+                {(totalCommissions ).toLocaleString("en-US", {
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2,
                 })}
